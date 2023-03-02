@@ -121,18 +121,36 @@ map compute_latency sharpen_ppar
 
 </details>
 
-Our evaluation demonstrates that running Aetherling designs with latency reported by the compiler generates incorrect results.
-We do this by providing two harnesses: one that runs the design the Aetherling latency and another one that runs it with Filament's latency that we found through trial and error.
+**TLDR**: Run the following command and note that 4 designs generate incorrect outputs:
+```
+runt -j 1
+```
 
-For example, we have the following directory structure:
+The expected output looks like:
 ```
-conv2d
-├── conv2d_1
-│   ├── conv2d_1.v
-│   ├── data.json
-│   ├── harness.expect
-│   └── harness.fil
+✗ aetherling latencies:table-1/aetherling/conv2d_48.fil
+✗ aetherling latencies:table-1/aetherling/conv2d_144.fil
+✗ aetherling latencies:table-1/aetherling/sharpen48.fil
+✗ aetherling latencies:table-1/aetherling/sharpen144.fil
 ```
+
+**Explanation.** Our evaluation demonstrates that running Aetherling designs with latency reported by the compiler generates incorrect results.
+We do this by providing two harnesses: one that runs the design the Aetherling latency and another one that runs it with Filament's latency that we found through trial and error.
+The `table-1` folder contains the experiment data in the following folders:
+1. `verilog`: Aetherling generated Verilog modules
+2. `data`: Aetherling test harness data for each module
+3. `golden`: Expected "golden" output for each test validated using the Aetherling test harness.
+4. `filament`: Harnesses to run modules with Filament latencies
+5. `aetherling`: Harnesses to run modules with Aetherling latencies.
+
+The above command runs each module with the corresponding data and the filament and Aetherling harnesses and compares the generated output with the golden output.
+
+*Optional*: To investigate how the inputs differ from expected ones, run the following command.
+```
+runt -j 1 -d
+```
+
+> **NOTE**: Table 1 reports that there are *5* incorrect designs, but we discovered that `conv2d_1` works correctly and therefore only *4* designs have incorrect latencies. We've updated the paper to reflect this and informed our reviewers.
 
 ### Table 2: Quantitative Comparison
 
