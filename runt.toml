@@ -1,6 +1,5 @@
 ver = "0.4.0"
 
-# Aetherling evaluation
 [[tests]]
 name = "aetherling latencies"
 paths = [
@@ -23,4 +22,28 @@ expect_dir = "table-1/golden/"
 cmd = """
 name=$(basename -s .fil {}) && \
 fud e -s cocotb.data "table-1/data/$name.json" --to cocotb-out {} -s futil.flags ' -d canonicalize' -q | jq
+"""
+
+[[tests]]
+name = "aetherling hold time"
+paths = [
+  # Run harness files that use Aetherling latencies
+  "mismatched-interface/aetherling/*.fil"
+]
+expect_dir = "mismatched-interface/golden/"
+cmd = """
+name=$(basename -s .fil {}) && \
+fud e -s cocotb.data "mismatched-interface/data/$name.json" --to cocotb-out {} -s futil.flags ' -d canonicalize' -q | jq
+"""
+
+[[tests]]
+name = "filament latencies"
+paths = [
+  # Run harness files that use Filament latencies
+  "mismatched-interface/filament/*.fil"
+]
+expect_dir = "mismatched-interface/golden/"
+cmd = """
+name=$(basename -s .fil {}) && \
+fud e -s cocotb.data "mismatched-interface/data/$name.json" --to cocotb-out {} -s futil.flags ' -d canonicalize' -q | jq
 """
