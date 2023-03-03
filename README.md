@@ -123,7 +123,7 @@ map compute_latency sharpen_ppar
 
 **TLDR**: Run the following command and note that 4 designs generate incorrect outputs:
 ```
-runt -j 1
+runt -j 1 -i table-1/
 ```
 
 The expected output looks like:
@@ -147,10 +147,27 @@ The above command runs each module with the corresponding data and the filament 
 
 *Optional*: To investigate how the inputs differ from expected ones, run the following command.
 ```
-runt -j 1 -d
+runt -j 1 -d -i table-1/
 ```
 
 > **NOTE**: Table 1 reports that there are *5* incorrect designs, but we discovered that `conv2d_1` works correctly and therefore only *4* designs have incorrect latencies. We've updated the paper to reflect this and informed our reviewers.
+
+Run the following command to get a CSV with all the latencies:
+```
+/scripts/extract-latencies.py table-1/**/*.fil
+```
+
+The generated CSV file corresponds to table 1.
+
+### Mismatched Interface
+
+Section 7.1, Paragraph "Underutilized designs" claims that Aetherling-generated designs violate the interface implied by Aetherling's type system.
+We use a test harness similar to one from the previous section to demonstrate that the expected interface is incorrect.
+
+**TLDR**: Run the following command and to note that using Aetherling's interface generated the wrong output:
+```
+runt -i mismatched-interface -j 1
+```
 
 ### Table 2: Quantitative Comparison
 

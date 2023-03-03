@@ -13,7 +13,7 @@ comp main<G: 3>(
     @interface[G] go: 1,
     @[G, G+3] in: 8,
 ) -> (
-    @[G+13, G+14] out: 8,
+    @[G+/*latency=*/13, G+14] out: 8,
 ) {
     s := new Sharpen<G>(in);
     out = s.O_0;

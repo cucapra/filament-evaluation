@@ -16,7 +16,7 @@ comp main<G: 1>(
     @[G, G+1] in0: 8,
     @[G, G+1] in1: 8,
 ) -> (
-    @[G+7, G+8] out0: 8,
+    @[G+/*latency=*/7, G+8] out0: 8,
     @[G+7, G+8] out1: 8,
 ) {
     s := new Sharpen<G>(in0, in1);

@@ -1,0 +1,26 @@
+ver = "0.4.0"
+
+# Aetherling evaluation
+[[tests]]
+name = "aetherling latencies"
+paths = [
+  # Run harness files that use Aetherling latencies
+  "table-1/aetherling/*.fil"
+]
+expect_dir = "table-1/golden/"
+cmd = """
+name=$(basename -s .fil {}) && \
+fud e -s cocotb.data "table-1/data/$name.json" --to cocotb-out {} -s futil.flags ' -d canonicalize' -q | jq
+"""
+
+[[tests]]
+name = "filament latencies"
+paths = [
+  # Run harness files that use Filament latencies
+  "table-1/filament/*.fil"
+]
+expect_dir = "table-1/golden/"
+cmd = """
+name=$(basename -s .fil {}) && \
+fud e -s cocotb.data "table-1/data/$name.json" --to cocotb-out {} -s futil.flags ' -d canonicalize' -q | jq
+"""
