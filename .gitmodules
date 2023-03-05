@@ -1,0 +1,6 @@
+[submodule "filament"]
+	path = filament
+	url = https://github.com/cucapra/filament.git
+[submodule "calyx"]
+	path = calyx
+	url = https://github.com/cucapra/calyx.git
