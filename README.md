@@ -182,10 +182,9 @@ As a sanity check, run `fud check` and ensure that the `synth-verilog` stage is 
 
 **TLDR**: Run the following command to generate synthesis results for each design mentioned in table 2:
 ```
-./scripts/synth.sh
+rm -f table-2.csv && ./scripts/synth.sh
 ```
-Next, run the following command to generate a table with all resource numbers:
-**TK**
+The generated file `table-2.csv` corresponds to the data presented in Table 2.
 
 **Explanation.** The `table-2` folder contains several implementations of the `conv2d` kernel: Aetherling-generated, pure Filament implementation, and Filament implementation that uses Reticle-generated dot product. The directory structure is:
 - `chisel-conv-16`: Verilog generated from Aetherling
@@ -200,4 +199,4 @@ For Filament files, `fud` compiles them to Verilog and runs the synthesis toolch
 
 [virtualbox]: https://www.virtualbox.org/
 [aeth-artifact]: https://dl.acm.org/do/10.1145/3395633/full/
-[xilinx-account]: https://login.xilinx.com/app/xilinx_accountamdcom_1/exkvizeb3uARYa0RN0x7/sso/saml
+[xilinx-account]: https://login.xilinx.com

@@ -5,7 +5,6 @@ file mkdir $IP
 
 # Create a new project and read IP
 create_project -force -part $partname FutilBuild $outdir
-read_ip [glob "$IP/*/*.xci"]
 add_files -quiet [glob -nocomplain ./*.sv]
 add_files -fileset constrs_1 [glob ./*.xdc]
 set_property top main [current_fileset]
