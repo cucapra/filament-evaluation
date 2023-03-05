@@ -45,17 +45,25 @@ ssh -p 3022
 
 ### Installing from Source
 
-If you're using the VM, skip to the next section.
+> **NOTE**: If you're using the VM, skip to the next section.
 
-**TK**
+Installing from source requires us to:
+1. Install [Calyx][], the LLVM-like hardware backend for Filament
+2. Configure hardware simulation tools
+3. Install the Filament compiler
+
 
 ### Sanity Check: Filament Installation
 
-At this point, you should have the Filament compiler fully set up. To make sure everything is working, run Filament's test suite by typing the following command in the Filament repository:
+At this point, you should have the Filament compiler fully set up.
+To make sure everything is working, run Filament's test suite by typing the following command:
+- If using the VM: **TK**
+- Otherwise, from this repository's root:
 ```
-runt -j 1
+cd filament && runt -j 1
 ```
-This should not report any errors.
+
+This should not report any errors but may say that certain tests were skipped. This is expected.
 
 ### Installing External Tools (Estimated time: 2-4 hours)
 Our evaluation uses Xilinx's Vivado and Vivado HLS tools to generate area and resource estimates.
