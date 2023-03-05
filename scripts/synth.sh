@@ -2,6 +2,15 @@
 
 set -euf -o pipefail
 
+Yellow='\033[0;33m'       # Yellow
+NC='\033[0m'       # Text Reset
+Green='\033[0;32m'
+Red='\033[0;31m'
+
+WARN="${Yellow}WARNING${NC}"
+INFO="${Green}INFO${NC}"
+ERR="${Red}ERROR${NC}"
+
 FILES=(
     table-2/filament/harness.fil
     table-2/filament-reticle/harness.fil
@@ -9,22 +18,20 @@ FILES=(
 )
 outputs=table-2/outputs
 
-# Check if outputs directory exists and error if it does
-if [ -d outputs ]; then
-    echo "Error: $outputs already exists. Please remove it before running this script."
-    exit 1
-else
-    mkdir "$outputs"
-fi
-
 for f in "${FILES[@]}"; do
-    # Get the device.xdc and synth.tcl files in the folder of the file we're checking
     dir=$(dirname "$f")
-    xdc="$dir/device.xdc"
-    tcl="$dir/synth.tcl"
-
     # The output JSON is named after the folder
     out="$outputs/$(basename "$dir").json"
+
+    # If the output file already exists, skip it
+    if [ -f "$out" ]; then
+        echo -e "${WARN}: Skipping $f because $out already exists"
+        continue
+    fi
+
+    # Get the device.xdc and synth.tcl files in the folder of the file we're checking
+    xdc="$dir/device.xdc"
+    tcl="$dir/synth.tcl"
 
     # Get the extension of the file
     ext="${f##*.}"
@@ -34,12 +41,12 @@ for f in "${FILES[@]}"; do
     elif [ "$ext" = "fil" ]; then
         start="filament"
     else
-        echo "Unknown file extension: $ext"
+        echo -e "${ERR}: Unknown file extension: $ext"
         exit 1
     fi
 
-    echo "Resources for $f using $xdc and $tcl: $out"
+    echo -e "${INFO}: Resources for $f using $xdc and $tcl: $out"
     # Run the fud command. We don't need to explicitly handle the difference between
     # the input .sv and .fil files because fud will do that for us.
-    fud e "$f" --from "$start" --to resource-estimate -s synth-files.constraints "$xdc" -s synth-files.tcl "$tcl" > "$out"
+    fud e -vv "$f" --from "$start" --to resource-estimate -s synth-verilog.constraints "$xdc" -s synth-verilog.tcl "$tcl" -o "$out"
 done
