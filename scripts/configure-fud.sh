@@ -38,6 +38,10 @@ python -m pip install cocotb pytest
 cd calyx && cargo build && cd ..
 cd filament && cargo build && cd ..
 
+# Register the icarus stage
+fud register -d icarus
+fud register icarus -p "$(pwd)/calyx/fud/icarus/icarus.py"
+
 # Configure fud
 fud c stages.futil.exec "$(pwd)/calyx/target/debug/futil"
 fud c stages.filament.exec "$(pwd)/filament/target/debug/filament"
