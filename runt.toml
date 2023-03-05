@@ -37,7 +37,7 @@ fud e -s cocotb.data "mismatched-interface/data/$name.json" --to cocotb-out {} -
 """
 
 [[tests]]
-name = "filament latencies"
+name = "filament hold time"
 paths = [
   # Run harness files that use Filament latencies
   "mismatched-interface/filament/*.fil"
