@@ -42,6 +42,10 @@ cd filament && cargo build && cd ..
 fud register -d icarus
 fud register icarus -p "$(pwd)/calyx/fud/icarus/icarus.py"
 
+# Register the filament stage
+fud register -d filament
+fud register filament -p "$(pwd)/filament/fud/filament.py"
+
 # Configure fud
 fud c stages.futil.exec "$(pwd)/calyx/target/debug/futil"
 fud c stages.filament.exec "$(pwd)/filament/target/debug/filament"
