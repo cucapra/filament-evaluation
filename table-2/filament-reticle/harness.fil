@@ -1,6 +1,6 @@
-import "../../../reticle/tdot.fil";
+import "./tdot.fil";
 import "primitives/core.fil";
-import "../stencil.fil";
+import "../filament-base/stencil.fil";
 
 comp Conv<G: 1>(
     @[G, G+1] in1: 8,

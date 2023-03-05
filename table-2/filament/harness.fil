@@ -1,4 +1,4 @@
-import "./stencil.fil";
+import "../filament-base/stencil.fil";
 import "./conv2d.fil";
 
 // The comp needs to be run for an extra cycle to flush the last value
