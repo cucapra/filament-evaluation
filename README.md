@@ -1,6 +1,13 @@
-## Filament Evaluation
+# Filament Evaluation
 
-Evaluation artifact for Filament HDL presented in the paper "Modular Hardware Design with Timeline Types".
+Evaluation artifact for Filament HDL presented in the paper "Modular Hardware Design with Timeline Types". To clone:
+
+```
+git clone https://github.com/cucapra/filament-evaluation.git
+cd filament-evaluation
+git submodule init
+git submodule update
+```
 
 ## Kick-the-Tires Phase (2-4 hours)
 
@@ -28,7 +35,7 @@ Our instructions assume you're using [VirtualBox][].
 
 **SSH Configuration**: We've configured the VM to accept SSH connections at port 3022. If you prefer using a command line, connect to the VM by running the following command after starting it up:
 ```
-ssh -p 3022
+ssh -p 3022 filament@127.0.0.1
 ```
 
 <details>
@@ -47,20 +54,38 @@ ssh -p 3022
 
 > **NOTE**: If you're using the VM, skip to the next section.
 
-Installing from source requires us to:
-1. Install [Calyx][], the LLVM-like hardware backend for Filament
-2. Configure hardware simulation tools
-3. Install the Filament compiler
+**Prerequisites**:
+- Clone this repository
+- Initialize submodules: `git submodule init && git submodule update`
+- Install [Rust][rust-install]
+- Install [z3][]
+- Install [Icarus Verilog][iverilog] (version >= 11.0)
 
+Run the following command to build and configure tools.
+**NOTE**: Make sure you're in the root of this repository before running the command! Otherwise, the installation **will fail** completely and misconfigure the tools:
+```
+cd filament-evaluation && ./scripts/configure-fud.sh
+```
 
-### Sanity Check: Filament Installation
+The final line should say exactly:
+```
+interpreter, dahlia, verilog, vcd, synth-verilog, vivado-hls were not installed correctly.
+```
+
+If any other tools were reported, then something went wrong during installation.
+Run the command `fud check` to see which tool was not installed correctly.
+
+### Sanity Check: Base Installation
+
+If you're using the VM, change directory to the evaluation repository:
+```
+cd ~/git/filament-evaluation
+```
 
 At this point, you should have the Filament compiler fully set up.
-To make sure everything is working, run Filament's test suite by typing the following command:
-- If using the VM: **TK**
-- Otherwise, from this repository's root:
+Run Filament's test suite by typing the following command:
 ```
-cd filament && runt -j 1
+cd filament && runt -j 1 && cd ..
 ```
 
 This should not report any errors but may say that certain tests were skipped. This is expected.
@@ -208,3 +233,6 @@ For Filament files, `fud` compiles them to Verilog and runs the synthesis toolch
 [virtualbox]: https://www.virtualbox.org/
 [aeth-artifact]: https://dl.acm.org/do/10.1145/3395633/full/
 [xilinx-account]: https://login.xilinx.com
+[rust-install]: https://www.rust-lang.org/tools/install
+[z3]: https://github.com/Z3Prover/z3
+[iverilog]: https://iverilog.fandom.com/wiki/Installation_Guide
