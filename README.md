@@ -79,7 +79,7 @@ Run the command `fud check` to see which tool was not installed correctly.
 
 If you're using the VM, change directory to the evaluation repository:
 ```
-cd ~/git/filament-evaluation
+cd ~/git/filament-evaluation && ./scripts/configure-fud.sh
 ```
 
 At this point, you should have the Filament compiler fully set up.
@@ -99,15 +99,14 @@ Our evaluation requires **Vivado WebPACK v.2020.2**.
 Due to the [instability of synthesis tools][verismith], we cannot guarantee our evaluation works with a newer or older version of the Vivado tools.
 
 If you're installing the tools on your own machine instead the VM, you can [download the installer][vivado-webpack].
-The following instructions assume you're using the VM:
 
+The following instructions assume you're using the VM:
 - Log in to the VM with the username `filament` and the password `filament`.
-- The desktop should have a file named: `Xilinx Installer`. Double click on this to launch the installer.
+- The desktop should have a file named: `Xilinx_Unified_2020.2_1118_1232_Lin64.bin`. Double click on this to launch the installer.
 - Ignore the warning and press `Ok`.
 - When the box pops up asking you for a new version, click `Continue`.
 - Enter your Xilinx credentials. If you don't have them, [create a Xilinx account][xilinx-account].
-  - **Note** When you create an account, you need to fill out all the required information on [your profile][xilinx-profile].
-  Otherwise [the Xilinx installer will reject your login](xilinx-fill-account).
+  - **Note** When you create an account, you need to fill out all the required information on [your profile][xilinx-profile]. Otherwise the Xilinx installer will reject your login.
   - The "User ID" is the email address of the Xilinx account you created.
 - Agree to the contract and press `Next`.
 - Choose `Vivado` and click `Next`.
@@ -115,11 +114,14 @@ The following instructions assume you're using the VM:
 - Leave the defaults for selecting devices and click `Next`.
 - **Important!** Change the install path from `/tools/Xilinx` to `/home/filament/Xilinx`.
 - Confirm that you want to create the directory.
-- Click Install. Depending on the speed of your connection, the whole process should take about 2 - 4 hrs.
+- Click Install. Depending on the speed of your connection, the whole process should take about 2-4 hrs.
 
 ### Sanity Check: External Tools
 
-We've provided a script that synthesizes a Filament design and reports the final numbers: **TK**
+We've provided a script that synthesizes a Filament design and reports the final numbers:
+```
+./script/synth.sh
+```
 
 ## Step-by-step Instructions
 
@@ -236,3 +238,6 @@ For Filament files, `fud` compiles them to Verilog and runs the synthesis toolch
 [rust-install]: https://www.rust-lang.org/tools/install
 [z3]: https://github.com/Z3Prover/z3
 [iverilog]: https://iverilog.fandom.com/wiki/Installation_Guide
+[vivado-webpack]: https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools/archive.html
+[xilinx-account]: https://www.xilinx.com/registration/create-account.html
+[xilinx-profile]: https://www.xilinx.com/myprofile/edit-profile.html

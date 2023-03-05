@@ -3,6 +3,7 @@
 set -euf -o pipefail
 
 # Update the submodules
+git pull --reset hard origin/main
 git submodule update --init --recursive
 
 # Install fud
