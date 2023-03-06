@@ -21,7 +21,7 @@ outputs=table-2/outputs
 mkdir -p $outputs
 
 CSV=table-2.csv
-echo "LUTs,DSPs,Registers,Frequency" > $CSV
+echo "Name,LUTs,DSPs,Registers,Frequency" > $CSV
 
 for f in "${FILES[@]}"; do
     dir=$(dirname "$f")
@@ -62,6 +62,7 @@ for f in "${FILES[@]}"; do
     fi
 
     # Use jq to extract
+    echo -n "$(basename "$dir")," >> $CSV
     cat $out | jq -r "[.lut, .dsp, .registers, .frequency] | @csv" >> $CSV
 done
 
