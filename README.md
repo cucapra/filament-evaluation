@@ -87,11 +87,10 @@ Due to the [instability of synthesis tools][verismith], we cannot guarantee our 
 
 If you're installing the tools on your own machine instead the VM, you can [download the installer][vivado-webpack].
 
-The following instructions assume you're using the VM:
+The following instructions assume you're using the VM. These instructions **require** a GUI for the installer to work.
 - Log in to the VM with the username `filament` and the password `filament`.
-- The desktop should have a file named: `Vivado`. Double click on this to launch the installer.
-- Ignore the warning and press `Ok`.
-- When the box pops up asking you for a new version, click `Continue`.
+- Open the terminal and run `cd ~/Desktop && ./Xilinx_Unified_2020.2_1118_1232_Lin64.bin`
+- If a box pops up asking you for a new version, ignore it and click `Continue`.
 - Enter your Xilinx credentials. If you don't have them, [create a Xilinx account][xilinx-account].
   - **Note** When you create an account, you need to fill out all the required information on [your profile][xilinx-profile]. Otherwise the Xilinx installer will reject your login.
   - The "User ID" is the email address of the Xilinx account you created.
@@ -102,6 +101,10 @@ The following instructions assume you're using the VM:
 - **Important!** Change the install path from `/tools/Xilinx` to `/home/filament/Xilinx`.
 - Confirm that you want to create the directory.
 - Click Install. Depending on the speed of your connection, the whole process should take about 2-4 hrs.
+- To ensure that the tool was installed correctly, do the following:
+  - Close the terminal and restart it. This should source the `vivado`'s initialization script: `source /home/filament/Xilinx/Vivado/2020.2/settings64.sh`
+  - Run `vivado -help` to make Vivado print out it version information
+
 
 <details>
 <summary><b>Troubleshooting common VM problems</b> [click to expand]</summary>
