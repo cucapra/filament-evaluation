@@ -11,7 +11,7 @@ git submodule update --init --recursive
 if ! command -v flit &> /dev/null
 then
     >&2 echo "Flit is not installed. Installing..."
-    python -m pip install flit
+    python3 -m pip install flit
 fi
 ## Check if fud is installed
 if ! command -v fud &> /dev/null
@@ -33,7 +33,7 @@ then
 fi
 
 # Install cocotb and dependencies
-python -m pip install cocotb pytest
+python3 -m pip install cocotb pytest
 
 # Build the tools
 cd calyx && cargo build && cd ..

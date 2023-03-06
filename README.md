@@ -46,7 +46,10 @@ ssh -p 3022 filament@127.0.0.1
 - Install [Rust][rust-install]
 - Install [z3][]
 - Install [Icarus Verilog][iverilog] (version >= 11.0)
-- Ensure your python version is >= 3.9
+- Ensure your python version is >= 3.9 and insall dependencies:
+```
+python3 -m pip install numpy
+```
 
 Run the following command from the root of the repository to build and configure tools:
 ```
