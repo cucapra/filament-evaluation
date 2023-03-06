@@ -18,9 +18,9 @@ FILES=(
     table-2/chisel-conv-16/conv2d_real_16.sv
 )
 outputs=table-2/outputs
+mkdir -p $outputs
 
 CSV=table-2.csv
-
 echo "LUTs,DSPs,Registers,Frequency" > $CSV
 
 for f in "${FILES[@]}"; do
