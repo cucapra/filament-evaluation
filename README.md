@@ -48,11 +48,11 @@ ssh -p 3022 filament@127.0.0.1
 - Install [Icarus Verilog][iverilog] (version >= 11.0)
 - Ensure your python version is >= 3.9
 
-Run the following command to build and configure tools.
-**NOTE**: Make sure you're in the root of this repository before running the command! Otherwise, the installation **will fail** completely and misconfigure the tools:
+Run the following command from the root of the repository to build and configure tools:
 ```
 cd <replace-with-location-to-filament-evaluation> && ./scripts/configure-fud.sh
 ```
+**NOTE**: Make sure you're in the root of this repository before running the command! Otherwise, the installation **will fail** completely and misconfigure the tools:
 
 The final line should say exactly:
 ```
