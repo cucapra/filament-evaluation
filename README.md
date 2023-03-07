@@ -131,7 +131,7 @@ The following instructions assume you're using the VM. These instructions **requ
 
 Use the following script to ensure that your `vivado` installation work correctly.
 ```
-./scripts/synth.sh
+cd <replace-with-location-to-filament-evaluation> && ./scripts/synth.sh
 ```
 
 ## Step-by-step Instructions
