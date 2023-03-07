@@ -2,10 +2,6 @@
 
 set -euf -o pipefail
 
-# Update the submodules
-git reset --hard origin/main && git pull
-git submodule update --init --recursive
-
 # Install fud
 ## Check if flit is installed
 if ! command -v flit &> /dev/null
