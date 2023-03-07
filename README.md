@@ -11,6 +11,8 @@ git submodule update
 
 ## Kick-the-Tires Phase (2-4 hours)
 
+**NOTE**: Before starting, ensure that you have ~100 GB of storage space. Unfortunately, the Vivado tools can take up quite a lot of space during installation.
+
 For the kick-the-tires phase we will:
 - Install the Filament compiler toolchain
 - Install external dependencies that cannot be packaged due to licensing requirements
@@ -25,7 +27,7 @@ The artifact is available in two formats: A virtual machine image and through co
 The VM is packaged as an OVA file. Our instructions assume you're using [VirtualBox][]. Import the appliance into VirtualBox by double-clicking it or selecting the OVA file when using the [import wizard][appliance-import].
 
 **Login Information**: The username and password are `filament`.
-- Minimum host disk space required to install external tools: 65 GB
+- Minimum host disk space required to install external tools: 95 GB
 - Increase number of cores and RAM
   - Select the VM and click "Settings".
   - Select "System" > "Motherboard" and increase the "Base Memory" to 8 GB.
@@ -122,7 +124,7 @@ The following instructions assume you're using the VM. These instructions **requ
 
 We've provided a script that synthesizes a Filament design and reports the final numbers:
 ```
-./script/synth.sh
+./scripts/synth.sh
 ```
 
 ## Step-by-step Instructions
