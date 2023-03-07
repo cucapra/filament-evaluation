@@ -44,6 +44,7 @@ ssh -p 3022 filament@127.0.0.1
 - Clone this repository
 - Initialize submodules: `git submodule init && git submodule update`
 - Install [Rust][rust-install]
+  - Install the test runner `runt`: `cargo install runt`
 - Install [z3][]
 - Install [Icarus Verilog][iverilog] (version >= 11.0)
 - Ensure your python version is >= 3.9 and insall dependencies:
