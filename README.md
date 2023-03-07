@@ -9,9 +9,9 @@ git submodule init
 git submodule update
 ```
 
-## Kick-the-Tires Phase (2-4 hours)
+**NOTE**: Before starting, ensure that you have 105 GB of storage space. Unfortunately, the Vivado tools can take up quite a lot of space during installation. To the best of our knowledge, Vivado tools are only supported for x86 architectures and do not work on the ARM-based processors.
 
-**NOTE**: Before starting, ensure that you have ~100 GB of storage space. Unfortunately, the Vivado tools can take up quite a lot of space during installation.
+## Kick-the-Tires Phase (2-4 hours)
 
 For the kick-the-tires phase we will:
 - Install the Filament compiler toolchain
@@ -21,13 +21,10 @@ The second step requires the reviewer to [create a Xilinx account][xilinx-accoun
 
 ### Using the VM
 
-The artifact is available in two formats: A virtual machine image and through code repositories hosted on Github.
-
-**Using the VM**.
-The VM is packaged as an OVA file. Our instructions assume you're using [VirtualBox][]. Import the appliance into VirtualBox by double-clicking it or selecting the OVA file when using the [import wizard][appliance-import].
+The VM is provided in a ZIP archive. Open the archive and import the provided OVA file. Our instructions assume you're using [VirtualBox][]. Import the appliance into VirtualBox by double-clicking it or selecting the OVA file when using the [import wizard][appliance-import].
 
 **Login Information**: The username and password are `filament`.
-- Minimum host disk space required to install external tools: 95 GB
+- Minimum host disk space required to install external tools: 105 GB
 - Increase number of cores and RAM
   - Select the VM and click "Settings".
   - Select "System" > "Motherboard" and increase the "Base Memory" to 8 GB.
@@ -58,15 +55,30 @@ Run the following command from the root of the repository to build and configure
 ```
 cd <replace-with-location-to-filament-evaluation> && ./scripts/configure-fud.sh
 ```
-**NOTE**: Make sure you're in the root of this repository before running the command! Otherwise, the installation **will fail** completely and misconfigure the tools:
+**NOTE**: Make sure you're in the root of this repository before running the command! Otherwise, the installation **will fail** completely and misconfigure the tools.
 
-The final line should say exactly:
+The final line should say exactly this:
 ```
-interpreter, dahlia, verilog, vcd, synth-verilog, vivado-hls were not installed correctly.
+synth-verilog was not installed correctly.
 ```
-
+This is expected because we have not yet installed the [Vivado toolchain][vivado-webpack].
 If any other tools were reported, then something went wrong during installation.
-Run the command `fud check` to see which tool was not installed correctly.
+Look at the output of the command to see which tool was not installed correctly.
+
+**Troubleshooting Issues**
+
+When running the script, if you get an error message saying:
+```
+externals is not set. Use `fud config external <val>` to set it.
+```
+Run the following command:
+```
+fud config --remove
+```
+
+This will remove `fud`'s configuration and generate the default file. Rerunning the configuration script from above should fix problems.
+
+
 
 ### Sanity Check: Base Installation
 
@@ -111,18 +123,13 @@ The following instructions assume you're using the VM. These instructions **requ
   - Close the terminal and restart it. This should source the `vivado`'s initialization script: `source /home/filament/Xilinx/Vivado/2020.2/settings64.sh`
   - Run `vivado -help` to make Vivado print out it version information
 
-
-<details>
-<summary><b>Troubleshooting common VM problems</b> [click to expand]</summary>
- - **Running out of disk space while installing Vivado tools**. The Vivado installer will sometimes
- crash or not start if there is not enough disk space. The Virtual Machine is configured to use
- a dynamically sized disk, so to solve this problem, simply clear space on the host machine. You need about 65 GBs of free space.
+**Troubleshooting common VM problems**
+ - **Running out of disk space while installing Vivado tools**. The Vivado installer will sometimes crash or not start if there is not enough disk space. The Virtual Machine is configured to use a dynamically sized disk, so to solve this problem, simply clear space on the host machine. You need about 105 GBs of free space.
  - **Running out of memory**. Vivado uses a fair amount of memory. If there is not enough memory available to the VM, they will crash and data won't be generated. If something fails you can increase the RAM and rerun the script that had a failure.
-</details>
 
-### Sanity Check: External Tools
+### Sanity Check: Vivado Installation
 
-We've provided a script that synthesizes a Filament design and reports the final numbers:
+Use the following script to ensure that your `vivado` installation work correctly.
 ```
 ./scripts/synth.sh
 ```
@@ -165,13 +172,13 @@ The generated CSV file corresponds to table 1.
 Our evaluation demonstrates that running Aetherling designs with latency reported by the compiler generates incorrect results.
 We do this by providing two harnesses: one that runs the design the Aetherling latency and another one that runs it with Filament's latency that we found through trial and error.
 The `table-1` folder contains the experiment data in the following folders:
-1. `verilog`: Aetherling generated Verilog modules
-2. `data`: Aetherling test harness data for each module
+1. `verilog`: Aetherling-generated Verilog modules
+2. `data`: Data from Aetherling's test harness
 3. `golden`: Expected "golden" output for each test validated using the Aetherling test harness.
 4. `filament`: Harnesses to run modules with Filament latencies
 5. `aetherling`: Harnesses to run modules with Aetherling latencies.
 
-The above commands runs each module with the corresponding data and the filament and Aetherling harnesses and compares the generated output with the golden output.
+The above command runs each module with the corresponding data and the filament and Aetherling harnesses and compares the generated output with the golden output.
 
 *Optional*: To investigate how the inputs differ from expected ones, run the following command.
 ```

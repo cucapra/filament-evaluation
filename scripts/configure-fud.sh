@@ -39,6 +39,9 @@ python3 -m pip install cocotb pytest
 cd calyx && cargo build && cd ..
 cd filament && cargo build && cd ..
 
+# Configure fud
+fud c --create global.futil_directory "$(pwd)/calyx"
+
 # Register the icarus stage
 fud register -d icarus
 fud register icarus -p "$(pwd)/calyx/fud/icarus/icarus.py"
@@ -51,4 +54,4 @@ fud register filament -p "$(pwd)/filament/fud/filament.py"
 fud c stages.futil.exec "$(pwd)/calyx/target/debug/futil"
 fud c stages.filament.exec "$(pwd)/filament/target/debug/filament"
 fud c stages.cocotb.exec "$(pwd)/filament/target/debug/filament"
-fud check
+fud check futil jq icarus-verilog filament cocotb synth-verilog
