@@ -4,6 +4,12 @@ Evaluation artifact for Filament HDL presented in the paper "Modular Hardware De
 
 **NOTE**: Before starting, ensure that you have 105 GB of storage space. Unfortunately, the Vivado tools can take up quite a lot of space during installation. To the best of our knowledge, Vivado tools are only supported for x86 architectures and do not work on the ARM-based processors.
 
+The artifact is provided in two formats:
+- A virtual machine OVA that can be imposed into [VirtualBox][]. This is the easiest way to get started.
+- A `code.zip` archive that contains the source code.
+
+Regardless of the format you choose, you will need to install the [Vivado WebPACK toolchain][vivado-webpack] to run the evaluation which only works on Linux x86 machines. We recommend the VM if you're on a Mac or Windows machine.
+
 ## Kick-the-Tires Phase (2-4 hours)
 
 For the kick-the-tires phase we will:
