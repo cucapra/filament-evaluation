@@ -13,8 +13,7 @@ Regardless of the format you choose, you will need to install the [Vivado WebPAC
 ## Kick-the-Tires Phase (2-4 hours)
 
 For the kick-the-tires phase we will:
-- Install the Filament compiler toolchain
-- Install external dependencies that cannot be packaged due to licensing requirements
+- Install the Filament compiler toolchain - Install external dependencies that cannot be packaged due to licensing requirements
 
 The second step requires the reviewer to [create a Xilinx account][xilinx-account] in order to download Xilinx's hardware synthesis tools.
 
