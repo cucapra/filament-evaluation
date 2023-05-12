@@ -1,3 +1,5 @@
+import "primitives/reshape.fil";
+
 extern "../verilog/conv2d_48.v" {
 // KERNEL_START=Conv2d_48
 comp Conv2d<G: 3>(
@@ -9,12 +11,46 @@ comp Conv2d<G: 3>(
 // KERNEL_END=Conv2d_48
 }
 
-comp main<G: 3>(
+comp main<G: 48>(
     @interface[G] valid_up: 1,
-    @[G, G+3] I_0: 8,
+    I[16]: for<#a> @[G, G+3] 8
 ) -> (
-    @[G+/*latency=*/12, G+13] O_0: 8,
+    O[16]: for<#b> @[G+/*latency=*/57, G+58] 8
 ) {
-    c := new Conv2d<G>(I_0);
-    O_0 = c.O;
+    // ======== Serialize =======
+    // Since the II of conv2D is 3, we need to delay the signals from
+    // the serializer and hold them for three cycles so that we
+    // can satisfy the constraints for Conv2D.
+    bundle ser[16]: for<#k> @[G+3*#k, G+3*#k+3] 8;
+    for #d in 0..16 {
+        if #d == 0 {
+            ser{#d} = I{#d};
+        } else {
+            d := new Register[8]<G, G+3*#d+4>(I{#d});
+            ser{#d} = d.out;
+        }
+    }
+
+    // Track the outputs of the convolution for deserialization
+    bundle co[16]: for<#j> @[G+3*#j+12, G+3*#j+13] 8;
+    // Convolution requires 16 inputs
+    C := new Conv2d;
+    for #i in 0..16 {
+        // Each invocation of the Conv2D executes 3 cycles after the
+        // previous one.
+        c := C<G+3*#i>(ser{#i});
+        co{#i} = c.O;
+    }
+
+    // ======= Deserialize =======
+    // Hold all signals for long enough so that they can be emitted
+    // at the same time.
+    for #g in 0..16 {
+        if #g == 15 {
+            O{#g} = co{#g};
+        } else {
+            r := new Register[8]<G+3*#g+12, G+58>(co{#g});
+            O{#g} = r.out;
+        }
+    }
 }
