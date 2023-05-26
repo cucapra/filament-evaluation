@@ -1,3 +1,5 @@
+import "primitives/reshape.fil";
+
 extern "../verilog/conv2d_8.v" {
 // KERNEL_START=Conv2d_8
 comp Conv2d<G: 1>(
@@ -11,15 +13,26 @@ comp Conv2d<G: 1>(
 // KERNEL_END=Conv2d_8
 }
 
-comp main<G: 1>(
+comp main<G: 8>(
     @interface[G] valid_up: 1,
-    @[G, G+1] I_0: 8,
-    @[G, G+1] I_1: 8,
+    I[16]: for<#a> @[G, G+1] 8
 ) -> (
-    @[G+/*latency=*/6, G+7] O_0: 8,
-    @[G+6, G+7] O_1: 8,
+    O[16]: for<#b> @[G+/*latency=*/13, G+14] 8
 ) {
-    c := new Conv2d<G>(I_0, I_1);
-    O_0 = c.O_0;
-    O_1 = c.O_1;
+    // Num bundles = 8
+    // Bundle size = 2
+    ser := new Serialize[8, 8, 2]<G>(I{0..16});
+
+    // Track the outputs of the convolution for deserialization
+    bundle co[16]: for<#j> @[G+#j/2+6, G+#j/2+7] 8;
+    // Convolution requires 16 inputs
+    C := new Conv2d;
+    for #i in 0..8 {
+        c := C<G+#i>(ser.out{2*#i+0}, ser.out{2*#i+1});
+        co{2*#i+0} = c.O_0; co{2*#i+1} = c.O_1;
+    }
+
+    // Deserialize the outputs
+    de := new Deserialize[8, 8, 2]<G+6>(co{0..16});
+    O{0..16} = de.out{0..16};
 }

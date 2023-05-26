@@ -1,3 +1,5 @@
+import "primitives/reshape.fil";
+
 extern "../verilog/conv2d_144.v" {
 // KERNEL_START=Conv2d_144
 comp Conv2d<G: 9>(
@@ -9,12 +11,27 @@ comp Conv2d<G: 9>(
 // KERNEL_END=Conv2d_144
 }
 
-comp main<G: 9>(
+comp main<G: 144>(
     @interface[G] valid_up: 1,
-    @[G, G+6] I_0: 8,
+    I[16]: for<#a> @[G, G+6] 8
 ) -> (
-    @[G+/*latency=*/21, G+22] O_0: 8,
+    O[16]: for<#b> @[G+/*latency=*/156, G+157] 8
 ) {
-    c := new Conv2d<G>(I_0);
-    O_0 = c.O;
+    // Serialize inputs
+    ser := new GenSerialize[8, 16, 1, 9, 6]<G>(I{0..16});
+
+    // Track the outputs of the convolution for deserialization
+    bundle co[16]: for<#j> @[G+9*#j+21, G+9*#j+22] 8;
+    // Convolution requires 16 inputs
+    C := new Conv2d;
+    for #i in 0..16 {
+        // Each invocation of the Conv2D executes 3 cycles after the
+        // previous one.
+        c := C<G+9*#i>(ser.out{#i});
+        co{#i} = c.O;
+    }
+
+    // Deserialize
+    deser := new GenDeserialize[8, 16, 1, 9, 1]<G+21>(co{0..16});
+    O{0..16} = deser.out{0..16};
 }
