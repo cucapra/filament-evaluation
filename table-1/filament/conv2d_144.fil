@@ -17,19 +17,8 @@ comp main<G: 144>(
 ) -> (
     O[16]: for<#b> @[G+/*latency=*/156, G+157] 8
 ) {
-    // ======== Serialize =======
-    // Since the II of conv2D is 3, we need to delay the signals from
-    // the serializer and hold them for three cycles so that we
-    // can satisfy the constraints for Conv2D.
-    bundle ser[16]: for<#k> @[G+9*#k, G+9*#k+6] 8;
-    for #d in 0..16 {
-        if #d == 0 {
-            ser{#d} = I{#d};
-        } else {
-            d := new Register[8]<G, G+9*#d+6>(I{#d});
-            ser{#d} = d.out;
-        }
-    }
+    // Serialize inputs
+    ser := new GenSerialize[8, 16, 1, 9, 6]<G>(I{0..16});
 
     // Track the outputs of the convolution for deserialization
     bundle co[16]: for<#j> @[G+9*#j+21, G+9*#j+22] 8;
@@ -38,19 +27,11 @@ comp main<G: 144>(
     for #i in 0..16 {
         // Each invocation of the Conv2D executes 3 cycles after the
         // previous one.
-        c := C<G+9*#i>(ser{#i});
+        c := C<G+9*#i>(ser.out{#i});
         co{#i} = c.O;
     }
 
-    // ======= Deserialize =======
-    // Hold all signals for long enough so that they can be emitted
-    // at the same time.
-    for #g in 0..16 {
-        if #g == 15 {
-            O{#g} = co{#g};
-        } else {
-            r := new Register[8]<G+9*#g+21, G+157>(co{#g});
-            O{#g} = r.out;
-        }
-    }
+    // Deserialize
+    deser := new GenDeserialize[8, 16, 1, 9, 1]<G+21>(co{0..16});
+    O{0..16} = deser.out{0..16};
 }

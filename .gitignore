@@ -2,3 +2,4 @@
 model.smt
 table-2/outputs/
 table-2.csv
+*.vcd

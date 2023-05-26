@@ -19,7 +19,7 @@ comp main<G: 16>(
 ) {
     // Num bundles = 16
     // Bundle size = 1
-    ser := new Serialize[16, 1, 8]<G>(I{0..16});
+    ser := new Serialize[8, 16, 1]<G>(I{0..16});
 
     // Track the outputs of the convolution for deserialization
     bundle co[16]: for<#j> @[G+#j+7, G+#j+8] 8;
@@ -31,6 +31,6 @@ comp main<G: 16>(
     }
 
     // Deserialize the outputs
-    de := new Deserialize[16, 1, 8]<G+7>(co{0..16});
+    de := new Deserialize[8, 16, 1]<G+7>(co{0..16});
     O{0..16} = de.out{0..16};
 }
